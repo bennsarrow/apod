@@ -1,0 +1,4 @@
+[apod_config]
+Screen_Size = 1368,768
+Num_Characters= 175
+API_Key = DEMO_KEY
