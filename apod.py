@@ -4,6 +4,7 @@ import requests
 import json
 import textwrap
 import os
+import sys
 from PIL import Image, ImageDraw, ImageFont
 from pathlib import Path
 from configparser import ConfigParser
@@ -21,7 +22,13 @@ num_chars = int(parser.get('apod_config', 'Num_Characters'))
 api_key = parser.get('apod_config', 'API_Key')
 
 url = 'https://api.nasa.gov/planetary/apod'
-data = json.loads(requests.get(url + '?api_key=' + api_key).text)
+if len(sys.argv) > 1:
+    date = str(sys.argv[1])
+    data = json.loads(requests.get(url + '?api_key=' + api_key +
+                      '&date=' + date).text)
+else:
+    data = json.loads(requests.get(url + '?api_key=' + api_key).text)
+
 image = Image.open(requests.get(data['hdurl'], stream=True).raw).resize(
     (scrn_width, scrn_length), resample=0)
 draw = ImageDraw.Draw(image)
