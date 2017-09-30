@@ -50,13 +50,17 @@ else:
         sys.exit()
 
 if data['media_type'] == 'image':
-#    image_url = requests.get(data['hdurl'], stream=True).raw
     image_url = requests.get(data['hdurl'], stream=True)
     if image_url.status_code == 404:
         logging.warning('404 Image not found: %s', data['hdurl'])
         sys.exit()
+    elif image_url.status_code != 200:
+        logging.warning(image_url.status_code +
+                        ' Image retrieval error: %s', data['hdurl'])
+        sys.exit()
     else:
-        logging.info('200 Image retrieval successful: %s', data['hdurl'])
+        logging.info(image_url.status_code +
+                     ' Image retrieval successful: %s', data['hdurl'])
         image = Image.open(image_url.raw).resize((scrn_width, scrn_length),
                                                  resample=0)
 
