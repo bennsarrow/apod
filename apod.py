@@ -15,7 +15,6 @@ home = str(Path.home())
 
 # setup logging
 logging.basicConfig(filename=home + '/.apod/apod.log',
-                    filemode='w',
                     format='%(asctime)s %(message)s',
                     level=logging.INFO)
 
@@ -55,11 +54,11 @@ if data['media_type'] == 'image':
         logging.warning('404 Image not found: %s', data['hdurl'])
         sys.exit()
     elif image_url.status_code != 200:
-        logging.warning(image_url.status_code +
+        logging.warning(str(image_url.status_code) +
                         ' Image retrieval error: %s', data['hdurl'])
         sys.exit()
     else:
-        logging.info(image_url.status_code +
+        logging.info(str(image_url.status_code) +
                      ' Image retrieval successful: %s', data['hdurl'])
         image = Image.open(image_url.raw).resize((scrn_width, scrn_length),
                                                  resample=0)
